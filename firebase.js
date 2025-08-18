@@ -1,14 +1,11 @@
-// Import the functions you need from the SDKs you need
-const { initializeApp } =require("firebase/app");
+const { initializeApp } = require("firebase/app");
 const { getAuth } = require("firebase/auth");
+const { getDatabase } = require("firebase/database");
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAC05kOcCerZ22jCoyHCn4NLzHSg3aZdmM",
   authDomain: "hikotek-35497.firebaseapp.com",
+  databaseURL: "https://hikotek-35497-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "hikotek-35497",
   storageBucket: "hikotek-35497.firebasestorage.app",
   messagingSenderId: "67685505573",
@@ -18,5 +15,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const database = getDatabase(app);
 
-module.exports = { app, auth };
+module.exports = { app, auth, database };
