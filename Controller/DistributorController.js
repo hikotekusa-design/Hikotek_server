@@ -4,9 +4,9 @@ class DistributorController {
   // Submit new application (Public)
   static async submitApplication(req, res) {
     try {
-      const { company, contactName, email, phone, channels } = req.body;
+      const { company, contactName, email, phone, channels,title } = req.body;
       
-      if (!company || !contactName || !email || !phone || !channels) {
+      if (!company || !contactName || !email || !phone || !channels || !title) {
         return res.status(400).json({ 
           success: false, 
           message: 'All fields are required' 
@@ -18,7 +18,8 @@ class DistributorController {
         contactName,
         email,
         phone,
-        channels
+        channels,
+        title
       });
 
       res.status(201).json({

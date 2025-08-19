@@ -12,7 +12,7 @@ class Enquiry {
       const newEnquiryRef = push(Enquiry.enquiriesRef);
       await set(newEnquiryRef, {
         ...enquiryData,
-        status: 'new',
+        status: 'New',
         createdAt: new Date().toISOString()
       });
       return newEnquiryRef.key;
@@ -71,6 +71,17 @@ class Enquiry {
       throw error;
     }
   }
+
+static async deleteEnquiry(id) {
+  try {
+    const enquiryRef = ref(database, `enquiries/${id}`);
+    await set(enquiryRef, null); // Setting to null removes the data
+    return true;
+  } catch (error) {
+    console.error("Error deleting enquiry:", error);
+    throw error;
+  }
+}
 }
 
 module.exports = Enquiry;

@@ -22,6 +22,7 @@ router.post('/enquiries', enquiries.createEnquiry);
 router.get('/admin/enquiries', enquiries.getAllEnquiries);
 router.get('/admin/enquiries/:id',enquiries.getEnquiry);
 router.patch('/admin/enquiries/:id/status',enquiries.updateStatus);
+router.delete('/admin/enquiries/:id', enquiries.deleteEnquiry);
 
 router.post('/distributor', DistributorController.submitApplication);
 
@@ -29,6 +30,7 @@ router.post('/distributor', DistributorController.submitApplication);
 router.get('/admin/distributor',  DistributorController.getAllApplications);
 router.get('/admin/distributor/:id', DistributorController.getApplication);
 router.patch('/admin/distributor/:id/status', DistributorController.updateStatus);
+router.delete('/admin/distributor/:id',DistributorController.deleteApplication)
 
 
 
