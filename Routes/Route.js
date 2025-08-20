@@ -1,22 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const AuthController = require('../Controller/AuthController');
-const ProductController=require('../Controller/productController')
 const verifyAdmin = require('../Middleware/authMiddleware'); 
-const upload = require('../Middleware/uploadMiddleware')
+const {uploadImages} = require('../Middleware/uploadMiddleware')
 const enquiries=require('../Controller/EnquiryController')
 const DistributorController=require('../Controller/DistributorController')
+const ProductController=require('../Controller/productController')
+
 
 
 
 // Admin login route
 router.post('/login', AuthController.loginAdmin);
 
-router.post('/products', verifyAdmin, upload.array('images', 5), ProductController.createProduct);
-router.get('/products', verifyAdmin, ProductController.getAllProducts);
-router.get('/products/:id', verifyAdmin, ProductController.getProductById);
-router.put('/products/:id', verifyAdmin, upload.array('images', 5), ProductController.updateProduct);
-router.delete('/products/:id', verifyAdmin, ProductController.deleteProduct);
 
 router.post('/enquiries', enquiries.createEnquiry);
 router.get('/admin/enquiries', enquiries.getAllEnquiries);
@@ -32,11 +28,17 @@ router.get('/admin/distributor/:id', DistributorController.getApplication);
 router.patch('/admin/distributor/:id/status', DistributorController.updateStatus);
 router.delete('/admin/distributor/:id',DistributorController.deleteApplication)
 
+router.post('/admin/products', uploadImages, ProductController.createProduct);
+router.get('/admin/products',  ProductController.getAllProducts);
+router.get('/admin/products/:id', ProductController.getProductById);
+router.patch('/admin/products/:id', uploadImages,ProductController.updateProduct);
+
+// router.patch('/admin/products/:id', ProductController.updateStatus);
+router.delete('/admin/products/:id', ProductController.deleteProduct);
 
 
 
 
 
 
-// Add more protected routes as needed
 module.exports = router;
