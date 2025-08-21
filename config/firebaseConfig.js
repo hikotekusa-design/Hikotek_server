@@ -49,12 +49,12 @@ module.exports = { admin, db };
 //     const user = await admin.auth().getUserByEmail(email);
 //     await admin.auth().setCustomUserClaims(user.uid, { admin: true });
     
-//     console.log(`✅ Successfully set admin role for: ${email}`);
-//     console.log(`📋 User UID: ${user.uid}`);
+//     console.log(` Successfully set admin role for: ${email}`);
+//     console.log( User UID: ${user.uid}`);
     
 //     return { success: true, uid: user.uid };
 //   } catch (error) {
-//     console.error('❌ Error setting admin role:', error.message);
+//     console.error(' Error setting admin role:', error.message);
 //     throw error;
 //   }
 // };
@@ -63,7 +63,7 @@ module.exports = { admin, db };
 // const verifyAdminStatus = async (email) => {
 //   try {
 //     const user = await admin.auth().getUserByEmail(email);
-//     console.log('📋 User Details:');
+//     console.log(' User Details:');
 //     console.log('UID:', user.uid);
 //     console.log('Email:', user.email);
 //     console.log('Custom Claims:', user.customClaims || 'No custom claims');
@@ -71,7 +71,7 @@ module.exports = { admin, db };
     
 //     return user.customClaims && user.customClaims.admin;
 //   } catch (error) {
-//     console.error('❌ Error checking admin status:', error.message);
+//     console.error(' Error checking admin status:', error.message);
 //     return false;
 //   }
 // };
