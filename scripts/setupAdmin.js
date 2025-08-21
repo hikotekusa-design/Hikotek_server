@@ -1,10 +1,14 @@
+const { setAdminRole } = require('../config/firebaseConfig'); // adjust path if needed
 
-const { setAdminRole } = require('../config/firebaseConfig');
+// Replace with your admin email
+const adminEmail = "hikotekadmin@gmail.com";
 
-// Set admin@example.com as admin
-setAdminRole('hikotekadmin@gmail.com')
-  .then(() => process.exit(0))
+setAdminRole(adminEmail)
+  .then(() => {
+    console.log("🎉 Done! Admin role assigned successfully.");
+    process.exit(0);
+  })
   .catch((err) => {
-    console.error(err);
+    console.error("🔥 Failed to assign admin role:", err.message);
     process.exit(1);
   });

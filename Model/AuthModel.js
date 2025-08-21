@@ -3,8 +3,6 @@ const { auth } = require('../firebase');
 const { signInWithEmailAndPassword } = require('firebase/auth');
 
 
-
-
 class AuthModel {
   static async verifyToken(idToken) {
     try {

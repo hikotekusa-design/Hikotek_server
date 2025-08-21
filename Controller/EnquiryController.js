@@ -116,10 +116,56 @@ const deleteEnquiry = async (req, res) => {
   }
 };
 
+const getEnquiryCount = async (req, res) => {
+  try {
+    const enquiries = await Enquiry.getAllEnquiries();
+    const count = Array.isArray(enquiries) ? enquiries.length : 0;
+    res.status(200).json({
+      success: true,
+      data: { count },
+    });
+  } catch (error) {
+    console.error('Error in getEnquiryCount:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch enquiry count',
+      details: error.message,
+    });
+  }
+};
+
+const getRecentEnquiries=async (req, res)=> {
+  try {
+    const enquiries = await Enquiry.find({})
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .limit(5) // Limit to 5
+      .select('name product message createdAt') // Select relevant fields
+      .exec();
+    res.status(200).json({
+      success: true,
+      data: enquiries,
+    });
+  } catch (error) {
+    console.error('Error in getRecentEnquiries:', {
+      message: error.message,
+      stack: error.stack,
+    });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch recent enquiries',
+      details: error.message,
+    });
+  }
+}
+
+
+
 module.exports = {
   createEnquiry,
   getAllEnquiries,
   getEnquiry,
   updateStatus,
-   deleteEnquiry
+   deleteEnquiry,
+   getEnquiryCount,
+    getRecentEnquiries
 };
