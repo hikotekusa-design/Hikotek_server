@@ -41,13 +41,15 @@ const admin = require('firebase-admin');
 
 if (!admin.apps.length) {
   try {
-    const serviceAccount = require('./config/serviceAccountKey.json');
+    // const serviceAccount = require('./config/serviceAccountKey.json');
+    const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      // databaseURL: process.env.FIREBASE_DATABASE_URL,
-      // storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-      databaseURL: 'https://hikotek-default-rtdb.firebaseio.com',
-     storageBucket: 'hikotek-35497.firebasestorage.app'
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+      storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+      // databaseURL: 'https://hikotek-default-rtdb.firebaseio.com',
+    //  storageBucket: 'hikotek-35497.firebasestorage.app'
     });
     
     console.log('Firebase Admin initialized successfully');
