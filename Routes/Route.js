@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const AuthController = require('../Controller/AuthController');
 const verifyAdmin = require('../Middleware/authMiddleware'); 
-const {uploadImages} = require('../Middleware/uploadMiddleware')
+const {uploadImages, firebaseStorage, handleUploadErrors} = require('../Middleware/uploadMiddleware')
 const enquiries=require('../Controller/EnquiryController')
 const DistributorController=require('../Controller/DistributorController')
 const ProductController=require('../Controller/productController')
+const {getAllAddresses,getAddressById,createAddress,updateAddress,deleteAddress,getActiveAddresses} = require('../Controller/AddressController');
 
 
 
@@ -39,10 +40,19 @@ router.get('/admin/distributor/:id', DistributorController.getApplication);
 router.patch('/admin/distributor/:id/status', DistributorController.updateStatus);
 router.delete('/admin/distributor/:id',DistributorController.deleteApplication)
 
-router.post('/admin/products', uploadImages, ProductController.createProduct);
+router.post('/admin/products', uploadImages,firebaseStorage.processUploads,handleUploadErrors, ProductController.createProduct);
 router.get('/admin/products',  ProductController.getAllProducts);
 router.get('/admin/products/:id', ProductController.getProductById);
-router.patch('/admin/products/:id', uploadImages,ProductController.updateProduct);
+router.patch('/admin/products/:id', uploadImages,firebaseStorage.processUploads,handleUploadErrors,ProductController.updateProduct);
+
+router.get('/admin/addresses', getAllAddresses);
+router.get('/admin/addresses/:id', getAddressById);
+router.post('/admin/addresses', createAddress);
+router.put('/admin/addresses/:id', updateAddress);
+router.delete('/admin/addresses/:id', deleteAddress);
+
+// Public route (for user display)
+router.get('/addresses', getActiveAddresses);
 
 
 // router.patch('/admin/products/:id', ProductController.updateStatus);
