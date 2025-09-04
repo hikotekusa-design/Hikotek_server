@@ -76,11 +76,14 @@ const createProduct = async (req, res) => {
 
     const productId = await Product.createProduct(productData);
 
+    // Return consistent response structure
     res.status(201).json({
       success: true,
       message: 'Product created successfully',
-      productId,
-      product: productData,
+      data: {
+        id: productId,
+        ...productData
+      }
     });
   } catch (error) {
     console.error('Error in createProduct:', error);
@@ -498,8 +501,8 @@ module.exports = {
   updateProduct,
   deleteProduct,
   getShowcaseProducts,
+  getShowcaseAllProducts,     
   getPublicProductById,
   searchProducts,
-  getProductCount,
-  getShowcaseAllProducts
+  getProductCount
 };

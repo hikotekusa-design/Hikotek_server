@@ -48,8 +48,9 @@ if (!admin.apps.length) {
       credential: admin.credential.cert(serviceAccount),
       databaseURL: process.env.FIREBASE_DATABASE_URL,
       storageBucket: process.env.FIREBASE_STORAGE_BUCKET
-      // databaseURL: 'https://hikotek-default-rtdb.firebaseio.com',
+      // databaseURL: 'https://hikotek-35497-default-rtdb.asia-southeast1.firebasedatabase.app',
     //  storageBucket: 'hikotek-35497.firebasestorage.app'
+     
     });
     
     console.log('Firebase Admin initialized successfully');
