@@ -410,7 +410,7 @@ const getPublicProductById = async (req, res) => {
       highlights: Array.isArray(product.highlights) ? product.highlights : [],
       specifications: Array.isArray(product.specifications) ? product.specifications : [],
       category: product.category || '',
-      price: product.showPrice ? product.price : null,
+      price: (product.showPrice === true || product.showPrice === "true") ? product.price : null,
       downloads: product.downloads || [],
       status: product.status || 'active',
     };

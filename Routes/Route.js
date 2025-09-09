@@ -7,6 +7,7 @@ const enquiries=require('../Controller/EnquiryController')
 const DistributorController=require('../Controller/DistributorController')
 const ProductController=require('../Controller/productController')
 const {getAllAddresses,getAddressById,createAddress,updateAddress,deleteAddress,getActiveAddresses} = require('../Controller/AddressController');
+const FooterController=require('../Controller/FooterController')
 
 
 
@@ -60,12 +61,21 @@ router.delete('/admin/products/:id', ProductController.deleteProduct);
 
 router.get('/products/showcase', ProductController.getShowcaseProducts);
 router.get('/products/showcaseall', ProductController.getShowcaseAllProducts);
+router.get('/products/public/:id', ProductController.getPublicProductById);
+
 
 
 router.get('/products/search', ProductController.searchProducts);
 
 router.get('/products/:id', ProductController.getPublicProductById);
 
+router.get('/admin/footer', FooterController.getAllFooterDetails);
+router.get('/admin/footer/:id', FooterController.getFooterDetail);
+router.post('/admin/footer', FooterController.createFooterDetail);
+router.put('/admin/footer/:id', FooterController.updateFooterDetail);
+router.delete('/admin/footer/:id', FooterController.deleteFooterDetail);
+
+router.get('/footer', FooterController.getActiveFooter);
 
 
 
