@@ -107,6 +107,10 @@ class Product {
     if (!productData.price || isNaN(parseFloat(productData.price))) {
       errors.push('Valid price is required');
     }
+    
+    if (productData.isFeatured !== undefined && typeof productData.isFeatured !== 'boolean') {
+    errors.push('isFeatured must be a boolean value');
+  }
 
     return errors;
   }

@@ -28,9 +28,9 @@ class Address {
       errors.push('Address is required');
     }
     
-    if (!addressData.phone || addressData.phone.trim() === '') {
-      errors.push('Phone is required');
-    }
+    // if (!addressData.phone || addressData.phone.trim() === '') {
+    //   errors.push('Phone is required');
+    // }
     
     if (!addressData.email || addressData.email.trim() === '') {
       errors.push('Email is required');
@@ -109,7 +109,7 @@ class Address {
       
       // Validate update data if any required fields are being updated
       if (updateData.title || updateData.name || updateData.address || 
-          updateData.phone || updateData.email) {
+           updateData.email) {
         const validationData = { ...existingAddress, ...updateData };
         const validationErrors = this.validate(validationData);
         if (validationErrors.length > 0) {

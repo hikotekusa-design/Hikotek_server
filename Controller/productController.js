@@ -13,7 +13,9 @@ const createProduct = async (req, res) => {
       description: req.body.description,
       specifications: req.body.specifications || [],
       highlights: req.body.highlights || [],
-      status: req.body.status || 'active'
+      status: req.body.status || 'active',
+      isFeatured: req.body.isFeatured === 'true' || req.body.isFeatured === true || false
+
     };
 
     // Parse arrays from JSON strings if needed
@@ -259,6 +261,7 @@ const updateProduct = async (req, res) => {
       ...(productData.mainImage && { mainImage: productData.mainImage }),
       ...(productData.downloads && { downloads: productData.downloads }),
       ...(productData.downloadData && { downloadData: productData.downloadData }),
+      ...(productData.isFeatured !== undefined && { isFeatured: productData.isFeatured === 'true' || productData.isFeatured === true }),
       updatedAt: new Date().toISOString(),
     };
 
@@ -493,6 +496,37 @@ const getProductCount = async (req, res) => {
     });
   }
 };
+const getfeatured = async (req, res) => {
+  try {
+    const products = await Product.getAllProducts();
+
+    const showcaseProducts = products
+      .filter(product => product.status !== 'inactive' && product.isFeatured === true)  // Fixed: Only featured
+      .slice(0, 10)
+      .map(product => ({
+        id: product.id,
+        name: product.name,
+        category: product.category || 'Uncategorized',
+        mainImage: product.mainImage || '',
+        highlight: Array.isArray(product.highlights) && product.highlights.length > 0 
+          ? product.highlights[0] 
+          : 'No highlights available',
+        description: product.description || ''
+      }));
+
+    res.status(200).json({
+      success: true,
+      data: showcaseProducts,
+    });
+  } catch (error) {
+    console.error('Error in getShowcaseProducts:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch showcase products',
+      details: error.message,
+    });
+  }
+};
 
 module.exports = {
   createProduct,
@@ -504,5 +538,6 @@ module.exports = {
   getShowcaseAllProducts,     
   getPublicProductById,
   searchProducts,
-  getProductCount
+  getProductCount,
+  getfeatured
 };

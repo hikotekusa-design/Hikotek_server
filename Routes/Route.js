@@ -1,3 +1,4 @@
+// routes.js
 const express = require('express');
 const router = express.Router();
 const AuthController = require('../Controller/AuthController');
@@ -62,6 +63,8 @@ router.delete('/admin/products/:id', ProductController.deleteProduct);
 router.get('/products/showcase', ProductController.getShowcaseProducts);
 router.get('/products/showcaseall', ProductController.getShowcaseAllProducts);
 router.get('/products/public/:id', ProductController.getPublicProductById);
+router.get('/products/featured', ProductController.getfeatured);
+
 
 
 
@@ -76,10 +79,5 @@ router.put('/admin/footer/:id', FooterController.updateFooterDetail);
 router.delete('/admin/footer/:id', FooterController.deleteFooterDetail);
 
 router.get('/footer', FooterController.getActiveFooter);
-
-
-
-
-
 
 module.exports = router;
