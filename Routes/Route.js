@@ -9,6 +9,7 @@ const DistributorController=require('../Controller/DistributorController')
 const ProductController=require('../Controller/productController')
 const {getAllAddresses,getAddressById,createAddress,updateAddress,deleteAddress,getActiveAddresses} = require('../Controller/AddressController');
 const FooterController=require('../Controller/FooterController')
+const HomeController = require('../Controller/HomeController');
 
 
 
@@ -79,5 +80,16 @@ router.put('/admin/footer/:id', FooterController.updateFooterDetail);
 router.delete('/admin/footer/:id', FooterController.deleteFooterDetail);
 
 router.get('/footer', FooterController.getActiveFooter);
+
+router.post('/admin/home/:section', uploadImages, firebaseStorage.processUploads, handleUploadErrors, HomeController.createItem);
+router.get('/admin/home/:section', HomeController.getAllItems);
+router.get('/admin/home/:section/:id', HomeController.getItemById);
+router.patch('/admin/home/:section/:id',  uploadImages, firebaseStorage.processUploads, handleUploadErrors, HomeController.updateItem);
+router.delete('/admin/home/:section/:id',  HomeController.deleteItem);
+
+router.get('/home/carousel', HomeController.getPublicCarousel);
+router.get('/home/topImages', HomeController.getPublicTopImages);
+router.get('/home/bottomImages', HomeController.getPublicBottomImages)
+
 
 module.exports = router;
