@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const path = require('path');
 const fs = require('fs').promises;
 const routes = require('./Routes/Route');
@@ -7,6 +8,7 @@ const routes = require('./Routes/Route');
 const app = express();
 
 // Middleware
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Add this line

@@ -10,13 +10,25 @@ const ProductController=require('../Controller/productController')
 const {getAllAddresses,getAddressById,createAddress,updateAddress,deleteAddress,getActiveAddresses} = require('../Controller/AddressController');
 const FooterController=require('../Controller/FooterController')
 const HomeController = require('../Controller/HomeController');
+const AboutController=require('../Controller/AboutController')
+const SubscriptionController=require('../Controller/SubscriptionController')
+
 
 
 
 
 // Admin login route
-router.post('/login', AuthController.loginAdmin);
-router.get('/admin/dashboard', verifyAdmin, );
+router.post('/login', AuthController.loginAdmin)
+
+// router.post('/otp/request', AuthController.requestOTP);
+// router.post('/otp/verify', AuthController.verifyOTP);
+
+// Protected routes (require admin authentication)
+// router.get('/verify', verifyAdmin, AuthController.verifyToken);
+// router.post('/cache/clear', verifyAdmin, AuthController.clearCache);
+// router.get('/cache/stats', verifyAdmin, AuthController.getCacheStats);
+
+router.get('/admin/dashboard', verifyAdmin );
 router.get('/admin/products/count', ProductController.getProductCount);
 router.get('/admin/enquiries/count', enquiries.getEnquiryCount)
 router.get('/admin/distributor/count', DistributorController.getApplicationCount)
@@ -47,6 +59,8 @@ router.post('/admin/products', uploadImages,firebaseStorage.processUploads,handl
 router.get('/admin/products',  ProductController.getAllProducts);
 router.get('/admin/products/:id', ProductController.getProductById);
 router.patch('/admin/products/:id', uploadImages,firebaseStorage.processUploads,handleUploadErrors,ProductController.updateProduct);
+router.delete('/admin/products/subcategory/:subcategory', ProductController.deleteSubcategory);
+router.delete('/admin/products/category/:category', ProductController.deleteCategory);
 
 router.get('/admin/addresses', getAllAddresses);
 router.get('/admin/addresses/:id', getAddressById);
@@ -90,6 +104,15 @@ router.delete('/admin/home/:section/:id',  HomeController.deleteItem);
 router.get('/home/carousel', HomeController.getPublicCarousel);
 router.get('/home/topImages', HomeController.getPublicTopImages);
 router.get('/home/bottomImages', HomeController.getPublicBottomImages)
+
+router.get('/admin/about',  AboutController.getAboutData);
+router.patch('/admin/about', AboutController.updateAboutData);
+
+// Public route
+router.get('/about', AboutController.getPublicAboutData);
+
+router.post('/subscribe', SubscriptionController.createSubscription);
+
 
 
 module.exports = router;

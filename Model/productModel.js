@@ -114,6 +114,42 @@ class Product {
 
     return errors;
   }
+
+  // productModel.js - Add this method to your Product class
+
+// Update multiple products by criteria
+static async updateProductsByCriteria(criteria, updates) {
+  try {
+    const products = await Product.getAllProducts();
+    const updatePromises = [];
+
+    products.forEach((product) => {
+      let shouldUpdate = false;
+      
+      // Check if product matches criteria
+      if (criteria.subcategory && product.subcategory === criteria.subcategory) {
+        shouldUpdate = true;
+      }
+      if (criteria.category && product.category === criteria.category) {
+        shouldUpdate = true;
+      }
+
+      if (shouldUpdate) {
+        const productRef = ref(database, `products/${product.id}`);
+        updatePromises.push(update(productRef, {
+          ...updates,
+          updatedAt: new Date().toISOString(),
+        }));
+      }
+    });
+
+    await Promise.all(updatePromises);
+    return { modifiedCount: updatePromises.length };
+  } catch (error) {
+    console.error('Error updating products:', error);
+    throw error;
+  }
+}
 }
 
 module.exports = Product;

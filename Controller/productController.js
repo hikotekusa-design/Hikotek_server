@@ -10,12 +10,12 @@ const createProduct = async (req, res) => {
       price: req.body.price,
       showPrice: req.body.showPrice,
       category: req.body.category,
+      subcategory: req.body.subcategory || '', // Ensure subcategory is always a string
       description: req.body.description,
       specifications: req.body.specifications || [],
       highlights: req.body.highlights || [],
       status: req.body.status || 'active',
       isFeatured: req.body.isFeatured === 'true' || req.body.isFeatured === true || false
-
     };
 
     // Parse arrays from JSON strings if needed
@@ -253,6 +253,7 @@ const updateProduct = async (req, res) => {
       ...(productData.price && { price: parseFloat(productData.price) }),
       ...(productData.showPrice !== undefined && { showPrice: productData.showPrice === 'true' || productData.showPrice === true }),
       ...(productData.category && { category: productData.category }),
+      ...(typeof productData.subcategory === 'string' && { subcategory: productData.subcategory }), // Ensure subcategory is updated
       ...(productData.description && { description: productData.description }),
       ...(productData.specifications.length > 0 && { specifications: productData.specifications }),
       ...(productData.highlights.length > 0 && { highlights: productData.highlights }),
@@ -326,6 +327,70 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// productController.js - Update these functions
+
+const deleteSubcategory = async (req, res) => {
+  try {
+    const { subcategory } = req.params;
+    if (!subcategory) {
+      return res.status(400).json({
+        success: false,
+        error: 'Subcategory name is required',
+      });
+    }
+
+    // Update all products with the given subcategory to set subcategory to ''
+    const result = await Product.updateProductsByCriteria(
+      { subcategory: subcategory },
+      { subcategory: '' }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Subcategory "${subcategory}" deleted successfully`,
+      data: { modifiedCount: result.modifiedCount },
+    });
+  } catch (error) {
+    console.error('Error in deleteSubcategory:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete subcategory',
+      details: error.message,
+    });
+  }
+};
+
+const deleteCategory = async (req, res) => {
+  try {
+    const { category } = req.params;
+    if (!category) {
+      return res.status(400).json({
+        success: false,
+        error: 'Category name is required',
+      });
+    }
+
+    // Update all products with the given category to set category to ''
+    const result = await Product.updateProductsByCriteria(
+      { category: category },
+      { category: '' }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: `Category "${category}" deleted successfully`,
+      data: { modifiedCount: result.modifiedCount },
+    });
+  } catch (error) {
+    console.error('Error in deleteCategory:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete category',
+      details: error.message,
+    });
+  }
+};
+
 const getShowcaseProducts = async (req, res) => {
   try {
     const products = await Product.getAllProducts();
@@ -337,6 +402,7 @@ const getShowcaseProducts = async (req, res) => {
         id: product.id,
         name: product.name,
         category: product.category || 'Uncategorized',
+        subcategory: product.subcategory || '',
         mainImage: product.mainImage || '',
         highlight: Array.isArray(product.highlights) && product.highlights.length > 0 
           ? product.highlights[0] 
@@ -370,6 +436,7 @@ const getShowcaseAllProducts = async (req, res) => {
         id: product.id,
         name: product.name,
         category: product.category || 'Uncategorized',
+        subcategory: product.subcategory || '',
         mainImage: product.mainImage || '',
         highlight: Array.isArray(product.highlights) && product.highlights.length > 0 
           ? product.highlights[0] 
@@ -413,6 +480,7 @@ const getPublicProductById = async (req, res) => {
       highlights: Array.isArray(product.highlights) ? product.highlights : [],
       specifications: Array.isArray(product.specifications) ? product.specifications : [],
       category: product.category || '',
+      subcategory: product.subcategory || '',
       price: (product.showPrice === true || product.showPrice === "true") ? product.price : null,
       downloads: product.downloads || [],
       status: product.status || 'active',
@@ -463,6 +531,8 @@ const searchProducts = async (req, res) => {
       .map(product => ({
         id: product.id,
         name: product.name,
+        category: product.category || 'Uncategorized',
+        subcategory: product.subcategory || ''
       }));
 
     res.status(200).json({
@@ -496,17 +566,19 @@ const getProductCount = async (req, res) => {
     });
   }
 };
+
 const getfeatured = async (req, res) => {
   try {
     const products = await Product.getAllProducts();
 
     const showcaseProducts = products
-      .filter(product => product.status !== 'inactive' && product.isFeatured === true)  // Fixed: Only featured
+      .filter(product => product.status !== 'inactive' && product.isFeatured === true)
       .slice(0, 10)
       .map(product => ({
         id: product.id,
         name: product.name,
         category: product.category || 'Uncategorized',
+        subcategory: product.subcategory || '',
         mainImage: product.mainImage || '',
         highlight: Array.isArray(product.highlights) && product.highlights.length > 0 
           ? product.highlights[0] 
@@ -534,6 +606,8 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
+  deleteSubcategory,
+  deleteCategory,
   getShowcaseProducts,
   getShowcaseAllProducts,     
   getPublicProductById,
