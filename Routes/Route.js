@@ -18,15 +18,15 @@ const SubscriptionController=require('../Controller/SubscriptionController')
 
 
 // Admin login route
-router.post('/login', AuthController.loginAdmin)
+router.post('/login', AuthController.login);
+router.post('/register', AuthController.register); 
+router.get('/admin/profile', AuthController.getAdminProfile);
+router.get('/admin/all',  AuthController.getAllAdmins)
+router.post('/logout', verifyAdmin, AuthController.logout);
 
-// router.post('/otp/request', AuthController.requestOTP);
-// router.post('/otp/verify', AuthController.verifyOTP);
 
-// Protected routes (require admin authentication)
-// router.get('/verify', verifyAdmin, AuthController.verifyToken);
-// router.post('/cache/clear', verifyAdmin, AuthController.clearCache);
-// router.get('/cache/stats', verifyAdmin, AuthController.getCacheStats);
+
+
 
 router.get('/admin/dashboard', verifyAdmin );
 router.get('/admin/products/count', ProductController.getProductCount);
