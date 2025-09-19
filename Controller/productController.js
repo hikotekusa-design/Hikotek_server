@@ -10,7 +10,7 @@ const createProduct = async (req, res) => {
       price: req.body.price,
       showPrice: req.body.showPrice,
       category: req.body.category,
-      subcategory: req.body.subcategory || '', // Ensure subcategory is always a string
+      subcategory: req.body.subcategory || '', 
       description: req.body.description,
       specifications: req.body.specifications || [],
       highlights: req.body.highlights || [],
@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
       isFeatured: req.body.isFeatured === 'true' || req.body.isFeatured === true || false
     };
 
-    // Parse arrays from JSON strings if needed
+    
     try {
       if (typeof productData.specifications === 'string') {
         productData.specifications = JSON.parse(productData.specifications);
@@ -49,24 +49,21 @@ const createProduct = async (req, res) => {
 
     if (req.uploadedDownloads && Array.isArray(req.uploadedDownloads)) {
       productData.downloads = req.uploadedDownloads.map(file => file.url);
-      productData.downloadData = req.uploadedDownloads; // Store full metadata
+      productData.downloadData = req.uploadedDownloads; 
       uploadedFiles = [...uploadedFiles, ...req.uploadedDownloads];
     } else {
       productData.downloads = [];
       productData.downloadData = [];
     }
 
-    // Convert price to number
     if (productData.price) {
       productData.price = parseFloat(productData.price);
     }
 
-    // Convert showPrice to boolean
     if (productData.showPrice !== undefined) {
       productData.showPrice = productData.showPrice === 'true' || productData.showPrice === true;
     }
 
-    // Validate product data
     const validationErrors = Product.validateProduct(productData);
     if (validationErrors.length > 0) {
       await firebaseStorage.cleanupUploads(uploadedFiles);
@@ -90,7 +87,6 @@ const createProduct = async (req, res) => {
   } catch (error) {
     console.error('Error in createProduct:', error);
 
-    // Clean up uploaded files on error
     if (uploadedFiles.length > 0) {
       await firebaseStorage.cleanupUploads(uploadedFiles);
     }
@@ -154,7 +150,6 @@ const updateProduct = async (req, res) => {
     const { id } = req.params;
     const productData = req.body;
 
-    // Check if product exists
     const existingProduct = await Product.getProductById(id);
     if (!existingProduct) {
       return res.status(404).json({
@@ -163,7 +158,6 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    // Parse arrays from string if needed
     const parseArray = (value) => {
       if (!value) return [];
       if (typeof value === 'string') {
@@ -179,7 +173,6 @@ const updateProduct = async (req, res) => {
     productData.specifications = parseArray(productData.specifications) || existingProduct.specifications || [];
     productData.highlights = parseArray(productData.highlights) || existingProduct.highlights || [];
 
-    // Handle uploaded files from Firebase Storage
     if (req.uploadedImages && Array.isArray(req.uploadedImages)) {
       uploadedFiles = [...req.uploadedImages];
       
