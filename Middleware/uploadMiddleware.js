@@ -143,25 +143,25 @@ const firebaseStorage = {
    * Clean up uploaded files on error
    * @param {Array} files - Array of file metadata objects to delete
    */
-  cleanupUploads: async (files) => {
-    if (!files || !Array.isArray(files) || files.length === 0) {
-      console.log('No files provided for cleanup');
-      return;
-    }
+  // cleanupUploads: async (files) => {
+  //   if (!files || !Array.isArray(files) || files.length === 0) {
+  //     console.log('No files provided for cleanup');
+  //     return;
+  //   }
 
-    console.log('Cleaning up files:', files.map(f => f.path));
-    try {
-      await Promise.allSettled(
-        files.map(file => firebaseStorage.deleteFromFirebase(file))
-      );
-      console.log('Cleanup completed');
-    } catch (error) {
-      console.error('Error during cleanup:', {
-        message: error.message,
-        stack: error.stack
-      });
-    }
-  }
+  //   console.log('Cleaning up files:', files.map(f => f.path));
+  //   try {
+  //     await Promise.allSettled(
+  //       files.map(file => firebaseStorage.deleteFromFirebase(file))
+  //     );
+  //     console.log('Cleanup completed');
+  //   } catch (error) {
+  //     console.error('Error during cleanup:', {
+  //       message: error.message,
+  //       stack: error.stack
+  //     });
+  //   }
+  // }
 };
 
 // Multer configuration (memory storage)

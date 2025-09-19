@@ -18,7 +18,6 @@ const createProduct = async (req, res) => {
       isFeatured: req.body.isFeatured === 'true' || req.body.isFeatured === true || false
     };
 
-    
     try {
       if (typeof productData.specifications === 'string') {
         productData.specifications = JSON.parse(productData.specifications);
@@ -66,7 +65,8 @@ const createProduct = async (req, res) => {
 
     const validationErrors = Product.validateProduct(productData);
     if (validationErrors.length > 0) {
-      await firebaseStorage.cleanupUploads(uploadedFiles);
+      // Temporarily comment out cleanup to debug file deletion issue
+      // await firebaseStorage.cleanupUploads(uploadedFiles);
       return res.status(400).json({
         success: false,
         errors: validationErrors,
@@ -87,9 +87,10 @@ const createProduct = async (req, res) => {
   } catch (error) {
     console.error('Error in createProduct:', error);
 
-    if (uploadedFiles.length > 0) {
-      await firebaseStorage.cleanupUploads(uploadedFiles);
-    }
+    // Temporarily comment out cleanup to debug file deletion issue
+    // if (uploadedFiles.length > 0) {
+    //   await firebaseStorage.cleanupUploads(uploadedFiles);
+    // }
 
     res.status(500).json({
       success: false,
@@ -188,7 +189,7 @@ const updateProduct = async (req, res) => {
       } else {
         // Delete old images from Firebase Storage
         if (existingProduct.imageData && existingProduct.imageData.length > 0) {
-          await firebaseStorage.cleanupUploads(existingProduct.imageData);
+          // await firebaseStorage.cleanupUploads(existingProduct.imageData);
         }
         productData.images = req.uploadedImages.map(file => file.url);
         productData.imageData = req.uploadedImages;
@@ -197,7 +198,7 @@ const updateProduct = async (req, res) => {
     } else if (productData.keepExistingImages !== 'true') {
       // Delete all images if keepExistingImages is false and no new images
       if (existingProduct.imageData && existingProduct.imageData.length > 0) {
-        await firebaseStorage.cleanupUploads(existingProduct.imageData);
+        // await firebaseStorage.cleanupUploads(existingProduct.imageData);
         productData.images = [];
         productData.imageData = [];
         productData.mainImage = '';
@@ -223,7 +224,7 @@ const updateProduct = async (req, res) => {
       } else {
         // Delete old downloads from Firebase Storage
         if (existingProduct.downloadData && existingProduct.downloadData.length > 0) {
-          await firebaseStorage.cleanupUploads(existingProduct.downloadData);
+          // await firebaseStorage.cleanupUploads(existingProduct.downloadData);
         }
         productData.downloads = req.uploadedDownloads.map(file => file.url);
         productData.downloadData = req.uploadedDownloads;
@@ -231,7 +232,7 @@ const updateProduct = async (req, res) => {
     } else if (productData.keepExistingDownloads !== 'true') {
       // Delete all downloads if keepExistingDownloads is false and no new downloads
       if (existingProduct.downloadData && existingProduct.downloadData.length > 0) {
-        await firebaseStorage.cleanupUploads(existingProduct.downloadData);
+        // await firebaseStorage.cleanupUploads(existingProduct.downloadData);
         productData.downloads = [];
         productData.downloadData = [];
       }
@@ -268,10 +269,9 @@ const updateProduct = async (req, res) => {
   } catch (error) {
     console.error('Error in updateProduct:', error);
 
-    // Clean up uploaded files from Firebase Storage on error
-    if (uploadedFiles.length > 0) {
-      await firebaseStorage.cleanupUploads(uploadedFiles);
-    }
+    // if (uploadedFiles.length > 0) {
+    //   await firebaseStorage.cleanupUploads(uploadedFiles);
+    // }
 
     res.status(500).json({
       success: false,
@@ -300,9 +300,9 @@ const deleteProduct = async (req, res) => {
       ...(product.downloadData || [])
     ];
 
-    if (filesToDelete.length > 0) {
-      await firebaseStorage.cleanupUploads(filesToDelete);
-    }
+    // if (filesToDelete.length > 0) {
+    //   await firebaseStorage.cleanupUploads(filesToDelete);
+    // }
 
     await Product.deleteProduct(id);
 
@@ -319,8 +319,6 @@ const deleteProduct = async (req, res) => {
     });
   }
 };
-
-// productController.js - Update these functions
 
 const deleteSubcategory = async (req, res) => {
   try {
