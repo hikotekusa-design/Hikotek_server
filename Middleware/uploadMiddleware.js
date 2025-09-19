@@ -196,8 +196,8 @@ const upload = multer({
   storage: multerStorage,
   fileFilter,
   limits: { 
-    fileSize: 15 * 1024 * 1024, // 15MB limit
-    files: 8 // Max 8 files (5 images + 3 downloads)
+    fileSize: 15000 * 1024 * 1024, 
+    files: 8 
   },
 });
 

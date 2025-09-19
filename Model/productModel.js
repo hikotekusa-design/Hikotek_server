@@ -115,7 +115,6 @@ class Product {
     return errors;
   }
 
-  // productModel.js - Add this method to your Product class
 
 // Update multiple products by criteria
 static async updateProductsByCriteria(criteria, updates) {

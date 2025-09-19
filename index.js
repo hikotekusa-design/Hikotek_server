@@ -11,28 +11,28 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Add this line
-// app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
+app.use(express.urlencoded({ extended: true })); 
 app.use('/', routes);
 
-// const ensureDirectories = async () => {
-//   const directories = [
-//     path.join(__dirname, 'Uploads/images'),
-//     path.join(__dirname, 'Uploads/downloads'),
-//   ];
-//   for (const dir of directories) {
-//     try {
-//       await fs.mkdir(dir, { recursive: true });
-//       console.log(`Ensured directory exists: ${dir}`);
-//     } catch (error) {
-//       console.error(`Failed to create directory ${dir}:`, error.message);
-//     }
-//   }
-// };
 
-// ensureDirectories();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+// functions/index.js
+// const functions = require('firebase-functions');
+// const express = require('express');
+// const app = express();
+
+// // ✅ SAME MIDDLEWARE AND ROUTES AS BEFORE
+// app.use(bodyParser.json());
+// app.use(cors());
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true })); 
+// app.use('/', require('./Routes/Route'));
+
+// // // ❌ NO app.listen()! Instead:
+// exports.api = functions.https.onRequest(app);
